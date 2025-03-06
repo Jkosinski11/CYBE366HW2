@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cstdint>
 
 //Password hash stored as a global contant ULL appended to end for an Unisigned long int
 const uint64_t PASSWORD  = 17938035065087455119ULL;
@@ -79,11 +80,35 @@ int main() {
         std::cerr << "Invalid password" << std::endl;
         return 1;
     }
-    int key_size;
+    int key_size ;
+    // Get input in string in case user inputs characters
+    std::string key_input;
     // Loop until a valid key size is entered
-    while(true){
+    bool flag = true;
+    while(flag){
+        flag = false;
+        //initialize key input and key size
+        key_input = "";
+        key_size = 0;
         std::cout << "Enter Key size: ";
-        std::cin >> key_size;
+        std::cin >> key_input;
+        //Check if key is a number
+        for ( char c : key_input)
+        {
+            if(!isdigit(c))
+            {
+                std::cerr << "Invalid key size" << std::endl;
+                flag = true;
+                break;
+            }
+        }
+        // if the key is not a number continue loop
+        if (flag)
+        {
+            continue;
+        }
+        // if key is a number convert it to an integer
+        key_size = std::stoi(key_input);
         //Key must be between sizes 0 and 94
         if (key_size > -1 && key_size < 95)
         {
@@ -94,6 +119,7 @@ int main() {
         {
             //Continue loop if key is invalid
             std::cerr << "Invalid key size" << std::endl;
+            flag = true;
         }
     }
     
